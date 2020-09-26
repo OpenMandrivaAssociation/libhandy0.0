@@ -1,3 +1,5 @@
+%bcond_with glade
+
 %define api		0.0
 %define major		0
 %define libname		%mklibname handy %{api} %{major}
@@ -17,7 +19,9 @@ Patch1:		libhandy-adapt-glade-3-36.patch
 BuildRequires:	gtk-doc
 BuildRequires:	meson
 BuildRequires:	vala
+%if %{with glade}
 BuildRequires:	pkgconfig(gladeui-2.0)
+%endif
 BuildRequires:	pkgconfig(gnome-desktop-3.0)
 BuildRequires:	pkgconfig(gobject-introspection-1.0)
 BuildRequires:	pkgconfig(gtk+-3.0) >= 3.24.1
@@ -59,6 +63,7 @@ Provides:	%{name}-devel = %{version}-%{release}
 Header files for development with %{name}.
 
 #------------------------------------------------
+%if %{with glade}
 
 %package -n	%{name}-glade
 Summary:	Glade (GTK+3) modules for %{name}
@@ -69,6 +74,7 @@ Requires:	glade
 This package provides a catalog for Glade (GTK+3) which allows the use
 of the provided Handy widgets in Glade.
 
+%endif
 #------------------------------------------------
 
 %prep
@@ -83,7 +89,11 @@ of the provided Handy widgets in Glade.
 	-Dgtk_doc=true \
 	-Dtests=false \
 	-Dexamples=false \
+%if %{with glade}
 	-Dglade_catalog=enabled \
+%else
+	-Dglade_catalog=disabled \
+%endif
 	%{nil}
 %meson_build
 
@@ -107,6 +117,8 @@ of the provided Handy widgets in Glade.
 %{_datadir}/vala/vapi/libhandy-%{api}.vapi
 %{_datadir}/gtk-doc/html/libhandy/
 
+%if %{with glade}
 %files -n %{name}-glade
 %{_libdir}/glade/modules/*.so
 %{_datadir}/glade/catalogs/*.xml
+%endif
