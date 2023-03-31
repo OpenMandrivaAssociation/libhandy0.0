@@ -8,7 +8,7 @@
 
 Name:		libhandy0.0
 Version:	0.0.13
-Release:	1
+Release:	2
 Summary:	Old compact version of a GTK+ library to develop UI for mobile devices
 License:	LGPLv2+
 Group:		Development/GNOME and GTK+
